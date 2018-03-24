@@ -20,10 +20,15 @@ const MainContextMenu = props => (
     <LinkNode
       href="https://github.com/captbaritone/winamp2-js"
       target="_blank"
+      label="Winampify"
+    />
+    <LinkNode
+      href="https://github.com/captbaritone/winamp2-js"
+      target="_blank"
       label="Winamp2-js"
     />
     <Hr />
-    <Parent label="Play">
+   {/* <Parent label="Play">
       <Node onClick={props.openMediaFileDialog} label="File..." />
       {props.filePickers &&
         props.filePickers.map(
@@ -41,7 +46,7 @@ const MainContextMenu = props => (
               />
             )
         )}
-    </Parent>
+      </Parent> */}
     <Parent label="Skins">
       <Node onClick={props.openSkinFileDialog} label="Load Skin..." />
       {!!props.avaliableSkins.length && <Hr />}

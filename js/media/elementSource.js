@@ -1,4 +1,5 @@
-const STATUS = {
+
+  /*const STATUS = {
   PLAYING: "PLAYING",
   STOPPED: "STOPPED",
   PAUSED: "PAUSED"
@@ -159,7 +160,6 @@ export default class ElementSource {
     return this._context.sampleRate;
   }
 
-  /*
   getLoop() {
     return this._audio.loop;
   }
@@ -167,10 +167,11 @@ export default class ElementSource {
   setLoop(shouldLoop) {
     this._audio.loop = shouldLoop;
   }
-  */
+  
 
   _setStatus(status) {
     this._status = status;
     this.trigger("statusChange");
   }
 }
+*/

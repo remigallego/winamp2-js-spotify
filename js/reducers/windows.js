@@ -12,7 +12,7 @@ import { arrayWith, arrayWithout } from "../utils";
 
 const defaultWindowsState = {
   focused: WINDOWS.MAIN,
-  equalizer: true,
+  equalizer: false,
   playlist: true,
   // openGenWindows: ["AVS_WINDOW"]
   openGenWindows: []

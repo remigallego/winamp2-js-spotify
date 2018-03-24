@@ -19,8 +19,8 @@ const AddMenu = ({ nextIndex, addFilesAtIndex, addDirAtIndex }) => (
       className="add-url"
       onClick={() => alert("Not supported in Winamp2-js")}
     />
-    <div className="add-dir" onClick={() => addDirAtIndex(nextIndex)} />
-    <div className="add-file" onClick={() => addFilesAtIndex(nextIndex)} />
+    <div className="add-dir" onClick={() => alert("Not supported in Winampify, but checkout Winamp2-js")} />
+    <div className="add-file" onClick={() => alert("Not supported in Winampify, but checkout Winamp2-js")} />
   </PlaylistMenu>
 );
 

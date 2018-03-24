@@ -16,7 +16,8 @@ import {
   getPlaylistURL,
   getSelectedTrackObjects,
   getTracks,
-  getTrackIsVisibleFunction
+  getTrackIsVisibleFunction,
+  getDuration
 } from "./selectors";
 
 import {
@@ -59,10 +60,85 @@ import {
   TOGGLE_PLAYLIST_SHADE_MODE,
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
-  PLAYLIST_SIZE_CHANGED
-} from "./actionTypes";
+  PLAYLIST_SIZE_CHANGED,
 
+  S_UPDATE_PLAYER_OBJECT,
+  S_PLAY_URI
+  
+} from "./actionTypes";
 import LoadQueue from "./loadQueue";
+
+import {
+  parseTrackURI, 
+  parseTracksPlaylist
+} from './spotifyParser'
+
+export function s_playRandomURI() {
+  return (dispatch) => {
+   return dispatch({ type: S_PLAY_URI, URI: "7xGfFoTpQ2E7fRF5lN10tr" })
+  }
+}
+
+export function addTrackFromURI(URI, index) {
+  return (dispatch, getState) => {
+   parseTrackURI(URI, (res) => {
+    let state = getState()
+    if(index === undefined)
+      {
+        index = state.playlist.trackOrder.length
+      }
+    dispatch({ type: ADD_TRACK_FROM_URL, defaultName: `${res.artist} - ${res.name}`, 
+    artist:  res.artist, title:  res.name,
+    duration: res.duration/1000, URI: URI, id: index, atIndex: index});
+   })
+  }
+}
+
+export function addTracksFromPlaylist(playlist) {
+  return (dispatch, getState) => {
+    let state = getState()
+    let playlistCount = state.playlist.trackOrder.length
+
+    parseTracksPlaylist(playlist, (err, arr) => {
+      if(err) throw err;
+      for(let i = 0 ; i < arr.length ;i++)
+      { 
+        let index = arr[i].index + playlistCount;
+        dispatch({ type: ADD_TRACK_FROM_URL, defaultName: `${arr[i].artist} - ${arr[i].name}`, 
+        artist:  arr[i].artist, title:  arr[i].name,
+        duration: arr[i].duration, URI: arr[i].uri, id: index, atIndex: index});
+        //dispatch(addTrackFromURI(arrURI[i].uri, index))
+      }
+    })
+  }
+}
+
+export function playTrack(id) {
+  return (dispatch, getState) => {
+    let duration = getState().playlist.tracks[id].duration
+     dispatch({type: PLAY_TRACK, id: id})
+  }
+}
+
+export function s_updatePlayerObject(p) {
+      let player = p;
+      let id = player._options.id
+      let getOAuthToken = player._options.getOAuthToken
+      let timeMode = "ELAPSED"
+      let volume = player._options.volume*100
+      let name = player._options.name      
+      let timeElapsed = 0 
+      let balance = 0
+      let channels = null
+      let shuffle = false
+      let repeat = false
+      let status = "STOPPED"
+      return { type: S_UPDATE_PLAYER_OBJECT, player: player,
+        id: id, getOAuthToken: getOAuthToken, timeMode: timeMode,volume: volume, 
+        name: name, timeElapsed: timeElapsed, 
+        length: length,  balance:balance, channels:channels, 
+        shuffle: shuffle, repeat: repeat, status: status}
+}
 
 // Lower is better
 const DURATION_VISIBLE_PRIORITY = 5;
@@ -74,6 +150,7 @@ const loadQueue = new LoadQueue({ threads: 4 });
 
 function playRandomTrack() {
   return (dispatch, getState) => {
+    
     const { playlist: { trackOrder, currentTrack } } = getState();
     let nextId;
     do {
@@ -93,7 +170,7 @@ export function play() {
       state.playlist.curentTrack == null &&
       state.playlist.trackOrder.length === 0
     ) {
-      dispatch(openMediaFileDialog());
+     // dispatch(openMediaFileDialog());
     } else {
       dispatch({ type: PLAY });
     }
@@ -113,6 +190,7 @@ export function stop() {
 
 export function nextN(n) {
   return (dispatch, getState) => {
+    
     const state = getState();
     if (state.media.shuffle) {
       dispatch(playRandomTrack());
@@ -132,6 +210,10 @@ export function next() {
 
 export function previous() {
   return nextN(-1);
+}
+
+export function unsetFocus() {
+  dispatch({type: UNSET_FOCUS});
 }
 
 export function seekForward(seconds) {
@@ -296,11 +378,13 @@ export function loadMediaFile(track, priority = null, atIndex = 0) {
     }
     dispatch({
       type: ADD_TRACK_FROM_URL,
-      url: canonicalUrl,
+      url: "canonicalUrl",
       defaultName,
       id,
       atIndex
     });
+    
+    
     switch (priority) {
       case LOAD_STYLE.BUFFER:
         dispatch({ type: BUFFER_TRACK, id });

@@ -69,13 +69,13 @@ class Visualizer extends React.Component {
     this.preRenderBg();
     this.preRenderBar();
     if (this.props.style === OSCILLOSCOPE) {
-      this.props.analyser.fftSize = 2048;
-      this.bufferLength = this.props.analyser.fftSize;
+     // this.props.analyser.fftSize = 2048;
+     // this.bufferLength = this.props.analyser.fftSize;
       this.dataArray = new Uint8Array(this.bufferLength);
     } else if (this.props.style === BAR) {
-      this.props.analyser.fftSize = 64; // Must be a power of two
+     // this.props.analyser.fftSize = 64; // Must be a power of two
       // Number of bins/bars we get
-      this.bufferLength = this.props.analyser.frequencyBinCount;
+     // this.bufferLength = this.props.analyser.frequencyBinCount;
       this.dataArray = new Uint8Array(this.bufferLength);
     }
   }
@@ -153,7 +153,7 @@ class Visualizer extends React.Component {
   }
 
   _paintOscilloscopeFrame() {
-    this.props.analyser.getByteTimeDomainData(this.dataArray);
+  //  this.props.analyser.getByteTimeDomainData(this.dataArray);
 
     this.canvasCtx.lineWidth = PIXEL_DENSITY;
 
@@ -212,7 +212,7 @@ class Visualizer extends React.Component {
   }
 
   _paintBarFrame() {
-    this.props.analyser.getByteFrequencyData(this.dataArray);
+   // this.props.analyser.getByteFrequencyData(this.dataArray);
     // We are printing bars off the right of the canvas :(
     const xOffset = BAR_WIDTH + PIXEL_DENSITY; // Bar width, plus a pixel of spacing to the right.
     const heightMultiplier = this._renderHeight() / 256;

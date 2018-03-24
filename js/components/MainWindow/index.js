@@ -105,7 +105,8 @@ export class MainWindow extends React.Component {
           />
           <Time />
         </div>
-        <Visualizer analyser={this.props.mediaPlayer._analyser} />
+       {/* Unsupported with Spotify WebPlayback API */}
+      <Visualizer analyser={null} />
         <div className="media-info">
           <Marquee />
           <Kbps />

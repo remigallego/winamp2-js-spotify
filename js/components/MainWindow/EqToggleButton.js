@@ -8,7 +8,7 @@ const EqToggleButton = props => (
   <div
     id="equalizer-button"
     className={classnames({ selected: props.equalizer })}
-    onClick={props.handleClick}
+    onClick={() => alert("Not supported in Winampify, but checkout Winamp2-js")}
     title="Toggle Graphical Equalizer"
   />
 );

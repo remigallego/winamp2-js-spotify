@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { BANDS } from "../constants";
 import {
   PLAY,
+  PLAY_TRACK,
   IS_PLAYING,
   PAUSE,
   STOP,
@@ -39,7 +40,10 @@ import {
   SET_AVALIABLE_SKINS,
   ADD_TRACK_FROM_URL,
   NETWORK_CONNECTED,
-  NETWORK_DISCONNECTED
+  NETWORK_DISCONNECTED,
+
+  S_UPDATE_PLAYER_OBJECT,
+  S_PLAY_URI
 } from "../actionTypes";
 
 import playlist from "./playlist";
@@ -176,14 +180,17 @@ const equalizer = (state, action) => {
   }
 };
 
+  
 const media = (state, action) => {
   if (!state) {
     return {
+      player: null,
+      id: null,
       timeMode: "ELAPSED",
       timeElapsed: 0,
       length: null, // Consider renaming to "duration"
-      kbps: null,
-      khz: null,
+      kbps: "360",
+      khz: 48,
       // The winamp ini file declares the default volume as "200".
       // The UI seems to show a default volume near 78, which would
       // math with the default value being 200 out of 255.
@@ -200,7 +207,9 @@ const media = (state, action) => {
     // TODO: Make these constants
     case PLAY:
     case IS_PLAYING:
-      return { ...state, status: "PLAYING" };
+    case S_PLAY_URI: 
+    case PLAY_TRACK:
+      return { ...state, status: "PLAYING"};
     case PAUSE:
       return { ...state, status: "PAUSED" };
     case STOP:
@@ -214,11 +223,6 @@ const media = (state, action) => {
     case ADD_TRACK_FROM_URL:
       return {
         ...state,
-        timeElapsed: 0,
-        length: null,
-        kbps: null,
-        khz: null,
-        channels: null
       };
     case SET_MEDIA:
       return {
@@ -236,6 +240,12 @@ const media = (state, action) => {
       return { ...state, repeat: !state.repeat };
     case TOGGLE_SHUFFLE:
       return { ...state, shuffle: !state.shuffle };
+    case S_UPDATE_PLAYER_OBJECT:
+      return { ...state, player: action.player, id: action.id, 
+      getOAuthToken: action.getOAuthToken, 
+      volume: action.volume, name: action.name, 
+      balance: action.balance, channels: action.channels, shuffle: action.shuffle, 
+      repeat: action.repeat}
     default:
       return state;
   }

@@ -2,7 +2,8 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import reducer from "./reducers";
-import mediaMiddleware from "./mediaMiddleware";
+// import mediaMiddleware from "./mediaMiddleware";
+import spotifyMiddleware from "./spotifyMiddleware";
 import analyticsMiddleware from "./analyticsMiddleware";
 import { merge } from "./utils";
 import { UPDATE_TIME_ELAPSED, STEP_MARQUEE } from "./actionTypes";
@@ -22,7 +23,7 @@ const getStore = (media, stateOverrides) => {
   return createStore(
     reducer,
     initialState,
-    compose(applyMiddleware(thunk, mediaMiddleware(media), analyticsMiddleware))
+    compose(applyMiddleware(thunk, spotifyMiddleware(media)))
   );
 };
 

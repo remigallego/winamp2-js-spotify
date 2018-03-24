@@ -7,6 +7,7 @@ import PlaylistWindow from "./PlaylistWindow";
 import EqualizerWindow from "./EqualizerWindow";
 import AvsWindow from "./AvsWindow";
 import Skin from "./Skin";
+import SpotifyWebPlaybackAPI from './SpotifyWebPlaybackAPI'
 
 import "../../css/winamp.css";
 
@@ -44,6 +45,7 @@ const App = ({
     <div role="application" id="winamp2-js">
       <Skin />
       <WindowManager windows={windows} container={container} />
+      <SpotifyWebPlaybackAPI />
     </div>
   );
 };

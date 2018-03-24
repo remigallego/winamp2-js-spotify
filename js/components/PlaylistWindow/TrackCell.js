@@ -5,8 +5,13 @@ import {
   CLICKED_TRACK,
   CTRL_CLICKED_TRACK,
   SHIFT_CLICKED_TRACK,
-  PLAY_TRACK
+  PLAY_TRACK,
+  SET_MEDIA
 } from "../../actionTypes";
+import {
+  playTrack,
+  play
+} from "../../actionCreators";
 import { getCurrentTrackId } from "../../selectors";
 
 class TrackCell extends React.Component {
@@ -62,7 +67,8 @@ const mapStateToProps = (state, ownProps) => {
   const { display: { skinPlaylistStyle }, playlist: { tracks } } = state;
   const current = getCurrentTrackId(state) === ownProps.id;
   const track = tracks[ownProps.id];
-  return { skinPlaylistStyle, selected: track.selected, current };
+  return { skinPlaylistStyle, selected: track.selected, 
+    current };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -75,7 +81,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     return dispatch({ type: CTRL_CLICKED_TRACK, index: ownProps.index });
   },
   click: () => dispatch({ type: CLICKED_TRACK, index: ownProps.index }),
-  onDoubleClick: () => dispatch({ type: PLAY_TRACK, id: ownProps.id })
+  onDoubleClick: () => {dispatch(playTrack(ownProps.index))}
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackCell);

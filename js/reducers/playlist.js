@@ -151,8 +151,9 @@ const playlist = (state = defaultPlaylistState, action) => {
             id: action.id,
             selected: false,
             defaultName: action.defaultName,
-            duration: null,
+            duration: action.duration,
             url: action.url,
+            URI: action.URI,
             mediaTagsRequestStatus: MEDIA_TAG_REQUEST_STATUS.NOT_REQUESTED
           }
         },

@@ -47,10 +47,8 @@ const mapStateToProps = ({ media, userInput }) => {
   } else {
     position = 0;
   }
-
   const displayedPosition =
     userInput.focus === "position" ? userInput.scrubPosition : position;
-
   return {
     displayedPosition,
     position

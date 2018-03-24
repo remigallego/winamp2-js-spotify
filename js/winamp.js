@@ -6,7 +6,7 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
-import { setSkinFromUrl, loadMediaFiles } from "./actionCreators";
+import { setSkinFromUrl, loadMediaFiles, addTrackFromURI } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 
 import {
@@ -63,9 +63,13 @@ class Winamp {
 
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
-    if (initialTracks) {
-      this.store.dispatch(loadMediaFiles(initialTracks, LOAD_STYLE.BUFFER));
-    }
+
+    // Initial Track:
+    this.store.dispatch(addTrackFromURI("1ngKxzxHTfZ2l5IU3lq2V8", 0));    
+
+   // if (initialTracks) {
+      //this.store.dispatch(loadMediaFiles(initialTracks, LOAD_STYLE.BUFFER));
+   // }
     if (avaliableSkins) {
       this.store.dispatch({
         type: SET_AVALIABLE_SKINS,
