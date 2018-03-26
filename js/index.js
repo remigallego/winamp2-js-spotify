@@ -1,5 +1,4 @@
 import "babel-polyfill";
-import Raven from "raven-js";
 import base from "../skins/base-2.91.wsz";
 import osx from "../skins/MacOSXAqua1-5.wsz";
 import topaz from "../skins/TopazAmp1-2.wsz";
@@ -8,81 +7,67 @@ import xmms from "../skins/XMMS-Turquoise.wsz";
 import zaxon from "../skins/ZaxonRemake1-0.wsz";
 import green from "../skins/Green-Dimension-V2.wsz";
 import Winamp from "./winamp";
+import Loading from './loading'
+import LandingPage from './landingpage'
+import React from 'react'
 
+import { render } from "react-dom";
 import {
   hideAbout,
   skinUrl,
   initialTracks,
   initialState,
-  sentryDsn
 } from "./config";
 
-Raven.config(sentryDsn).install();
-
-// Don't prompt user to install Winamp2-js. It's probably not
-// what they want.
-window.addEventListener("beforeinstallprompt", e => {
-  // TODO: we could add this as a context menu item, or something.
-  e.preventDefault();
-});
-
-// Requires Dropbox's Chooser to be loaded on the page
-function genAudioFileUrlsFromDropbox() {
-  return new Promise((resolve, reject) => {
-    if (window.Dropbox == null) {
-      reject();
-    }
-    window.Dropbox.choose({
-      success: resolve,
-      error: reject,
-      linkType: "direct",
-      folderselect: false,
-      multiselect: true,
-      extensions: ["video", "audio"]
-    });
-  });
-}
-
-Raven.context(() => {
   if (hideAbout) {
     document.getElementsByClassName("about")[0].style.visibility = "hidden";
   }
   if (!Winamp.browserIsSupported()) {
     document.getElementById("browser-compatibility").style.display = "block";
     document.getElementById("app").style.visibility = "hidden";
-    return;
   }
+  
+  let tokens; 
 
-  const winamp = new Winamp({
-    initialSkin: {
-      url: skinUrl
-    },
-    initialTracks,
-    avaliableSkins: [
-      { url: base, name: "<Base Skin>" },
-      { url: green, name: "Green Dimension V2" },
-      { url: osx, name: "Mac OSX v1.5 (Aqua)" },
-      { url: topaz, name: "TopazAmp" },
-      { url: visor, name: "Vizor" },
-      { url: xmms, name: "XMMS Turquoise " },
-      { url: zaxon, name: "Zaxon Remake" }
-    ],
-    filePickers: [
-      {
-        contextMenuName: "Dropbox...",
-        filePicker: async () => {
-          const files = await genAudioFileUrlsFromDropbox();
-          return files.map(file => ({
-            url: file.link,
-            defaultName: file.name
-          }));
-        },
-        requiresNetwork: true
+  let url = window.location.search
+  if(url !== ""){
+    let getQuery = url.split('?')[1]
+    let params = getQuery.split('&') 
+    if(params.length === 2)
+      tokens = {
+        access_token: params[0].slice(2),
+        refresh_token: params[1].slice(2)
       }
-    ],
-    enableHotkeys: true,
-    __initialState: initialState
-  });
+    else
+      tokens = 0;
+  }
+  else
+    tokens = 0;
 
-  winamp.renderWhenReady(document.getElementById("app"));
-});
+  if(tokens) {
+    const winamp = new Winamp({
+      initialSkin: {
+        url: skinUrl
+      },
+      tokens: tokens,
+      initialTracks,
+      avaliableSkins: [
+        { url: base, name: "<Base Skin>" },
+        { url: green, name: "Green Dimension V2" },
+        { url: osx, name: "Mac OSX v1.5 (Aqua)" },
+        { url: topaz, name: "TopazAmp" },
+        { url: visor, name: "Vizor" },
+        { url: xmms, name: "XMMS Turquoise " },
+        { url: zaxon, name: "Zaxon Remake" }
+      ],
+      filePickers: [{}],
+      enableHotkeys: true,
+      __initialState: initialState
+    });
+    render(<Loading />, document.getElementById('app'));
+    winamp.renderWhenReady(document.getElementById("app"), tokens);
+  }
+  else
+  {
+    render(<LandingPage />, document.getElementById('app'));
+  }

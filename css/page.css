@@ -1,10 +1,72 @@
 /* Rules for the page layout */
+html {
+    background-color: #F77C88;
+    height: 100%;
+    width: 100%;    
+    background: linear-gradient(#F77C88, #FBA377);
+}
 body {
-    background-color: #224eb7;
-    font-family: arial;
+    font-family: arial; 
     font-size: 15px;
 }
 
+.landing-wrapper {
+    position: absolute;
+    height: 300px;
+    width: 900px;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+.landing-text {
+    color: #1E3264;
+    font-size: 40px;
+    font-family: "Cabin", sans-serif;
+    text-align: center;
+}
+.landing-text--black {
+    color: rgb(17, 29, 59);
+    display: inline;
+}
+.signin-btn {
+    font-family: "Helvetica", sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    padding-top: 0.9em;
+}
+.signin-btn-wrapper {
+    border: 3px solid #fff;
+    border-radius: 1.875rem;
+    height: 3.75rem;
+    padding: 0 3.4375rem;
+    font-size: .875rem;
+    background-color: transparent;
+    cursor: pointer;
+    width: 200px;
+    color: white;
+    transition: all 0.3s;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.signin-btn-wrapper:hover {
+    background-color: #fff;
+    color: #224eb7;
+
+}
+
+.footer {
+
+    text-align: center;
+    color: #fff; 
+    opacity: 0.6;
+}
 #browser-compatibility {
     display: none;
     position: absolute;

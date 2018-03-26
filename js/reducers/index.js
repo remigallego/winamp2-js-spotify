@@ -42,8 +42,10 @@ import {
   NETWORK_CONNECTED,
   NETWORK_DISCONNECTED,
 
+  ADD_TRACK_FROM_URI,
   S_UPDATE_PLAYER_OBJECT,
-  S_PLAY_URI
+  S_PLAY_URI,
+  READY
 } from "../actionTypes";
 
 import playlist from "./playlist";
@@ -119,7 +121,6 @@ const display = (state = defaultDisplayState, action) => {
     case SET_SKIN_DATA:
       return {
         ...state,
-        loading: false,
         skinImages: action.skinImages,
         skinColors: action.skinColors,
         skinPlaylistStyle: action.skinPlaylistStyle,
@@ -133,6 +134,8 @@ const display = (state = defaultDisplayState, action) => {
       return { ...state, playlistScrollPosition: action.position };
     case PLAYLIST_SIZE_CHANGED:
       return { ...state, playlistSize: action.size };
+    case S_UPDATE_PLAYER_OBJECT:
+      return { ...state, loading: false}
     default:
       return state;
   }
@@ -224,6 +227,10 @@ const media = (state, action) => {
       return {
         ...state,
       };
+    case ADD_TRACK_FROM_URI:
+    return {
+      ...state,
+    };
     case SET_MEDIA:
       return {
         ...state,

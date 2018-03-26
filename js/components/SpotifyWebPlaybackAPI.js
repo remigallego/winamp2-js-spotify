@@ -1,11 +1,9 @@
 import React from "react";
 import Script from 'react-load-script'
 import { connect } from "react-redux";
-import token from '../access_token.js'
 
 import {
-  s_updatePlayerObject, 
-  s_playRandomURI,
+  createPlayerObject, 
   removeAllTracks,
   addTrackFromURI,
   addTracksFromPlaylist
@@ -18,25 +16,7 @@ constructor(props) {
 }
 
 handleScriptLoad()  {
-  const player = new Spotify.Player({             // Spotify is not defined until
-    name: 'Winampify',                   // the script is loaded in
-    getOAuthToken: cb => { cb(token) }
-  })
 
-  // Error handling
-  player.addListener('initialization_error', ({ message }) => { console.error(message); });
-  player.addListener('authentication_error', ({ message }) => { console.error(message); });
-  player.addListener('account_error', ({ message }) => { console.error(message); });
-  player.addListener('playback_error', ({ message }) => { console.error(message); });
-
-  // Ready
-  player.addListener('ready', ({ device_id }) => {
-    console.log('Ready with Device ID', device_id);
-
-    this.props.s_updatePlayerObject(player)
-  });
-
-  player.connect()
 
 }
 
@@ -55,21 +35,14 @@ handleSubmit(e) {
 render() {
   return(
     <div>
-    <Script
-      url="https://sdk.scdn.co/spotify-player.js"
-      onError={this.handleScriptError}
-      onLoad={this.handleScriptLoad}
-    />
-
-    {/*       DEBUG       */}
-    <button onClick={() => this.props.s_playRandomURI()}>Play Random Track</button>
-    <button onClick={() => this.props.removeAllTracks()}>Remove All Tracks</button>
-    <button onClick={() => this.props.addTrackFromURI("4rzfv0JLZfVhOhbSQ8o5jZ")}>Add Random Track</button>
-    <button onClick={() => this.props.addTrackFromURI("1ngKxzxHTfZ2l5IU3lq2V8")}>Add Random Track 2</button>
-    <button onClick={() => this.props.addTracksFromPlaylist("spotify:user:remifasol:playlist:43uS6JpETpdcZxTtK7cxCR")}>Add Tracks from Random Playlist</button>
-    <form onSubmit={(e) => this.handleSubmit(e)}>
-    <input value="spotify:user:remifasol:playlist:43uS6JpETpdcZxTtK7cxCR" readOnly style={{width: "700px"}}>
-    </input></form>
+      {/*       DEBUG       */}
+      <button onClick={() => this.props.removeAllTracks()}>Remove All Tracks</button>
+      <button onClick={() => this.props.addTrackFromURI("4rzfv0JLZfVhOhbSQ8o5jZ")}>Add Random Track</button>
+      <button onClick={() => this.props.addTrackFromURI("1ngKxzxHTfZ2l5IU3lq2V8")}>Add Random Track 2</button>
+      <button onClick={() => this.props.addTracksFromPlaylist("spotify:user:remifasol:playlist:43uS6JpETpdcZxTtK7cxCR")}>Add Tracks from Random Playlist</button>
+      <form onSubmit={(e) => this.handleSubmit(e)}>
+      <input value="spotify:user:remifasol:playlist:43uS6JpETpdcZxTtK7cxCR" readOnly style={{width: "700px"}}>
+      </input></form>
    </div>
   )
 }
@@ -81,11 +54,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  s_updatePlayerObject,
-  s_playRandomURI,
+  createPlayerObject,
   removeAllTracks,
   addTrackFromURI,
-  addTracksFromPlaylist
+  addTracksFromPlaylist,
+  ready: () => {
+    dispatch({type: 'READY'})
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SpotifyWebPlaybackAPI);

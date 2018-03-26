@@ -24,4 +24,4 @@ export const initialTracks = config.initialTracks
 
 export const hideAbout = config.hideAbout || false;
 export const initialState = config.initialState || undefined;
-export const sentryDsn = SENTRY_DSN;
+// export const sentryDsn = SENTRY_DSN;

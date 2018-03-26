@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { addTracksFromReferences } from "../../actionCreators";
+import { addTracksFromReferences, openMediaFileDialog } from "../../actionCreators";
 import { promptForFileReferences } from "../../fileUtils";
 import PlaylistMenu from "./PlaylistMenu";
 
@@ -17,7 +17,7 @@ const AddMenu = ({ nextIndex, addFilesAtIndex, addDirAtIndex }) => (
   <PlaylistMenu id="playlist-add-menu">
     <div
       className="add-url"
-      onClick={() => alert("Not supported in Winamp2-js")}
+      onClick={() => openMediaFileDialog}
     />
     <div className="add-dir" onClick={() => alert("Not supported in Winampify, but checkout Winamp2-js")} />
     <div className="add-file" onClick={() => alert("Not supported in Winampify, but checkout Winamp2-js")} />

@@ -18,7 +18,8 @@ import {
   SET_MEDIA_TAGS,
   SET_MEDIA_DURATION,
   MEDIA_TAG_REQUEST_INITIALIZED,
-  MEDIA_TAG_REQUEST_FAILED
+  MEDIA_TAG_REQUEST_FAILED,
+  ADD_TRACK_FROM_URI
 } from "../actionTypes";
 import { MEDIA_TAG_REQUEST_STATUS } from "../constants";
 
@@ -135,6 +136,7 @@ const playlist = (state = defaultPlaylistState, action) => {
     case SET_TRACK_ORDER:
       const { trackOrder } = action;
       return { ...state, trackOrder };
+    case ADD_TRACK_FROM_URI:
     case ADD_TRACK_FROM_URL:
       const atIndex =
         action.atIndex == null ? state.trackOrder.length : action.atIndex;

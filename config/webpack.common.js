@@ -42,9 +42,9 @@ module.exports = {
     // directory, and injects a tag into the gererated index.html file
     // it also, applies cache-busting for all the icons.
     new WebpackPwaManifest({
-      name: "Winamp",
-      short_name: "Winamp", // eslint-disable-line camelcase
-      description: "Winamp 2.9 reimplemented in HTML5 and JavaScript",
+      name: "Winampify",
+      short_name: "Winampify", // eslint-disable-line camelcase
+      description: "Winampify is a Web Client for Spotify using Winamp 2 skins",
       start_url: "./?utm_source=web_app_manifest", // eslint-disable-line camelcase
       scope: "./",
       display: "standalone",

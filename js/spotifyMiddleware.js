@@ -24,7 +24,7 @@ import eventListener from './spotifyEvents'
 
 import { next as nextTrack } from "./actionCreators";
 import { getCurrentTrackId } from "./selectors";
-
+import * as qs from 'qs'
 
 export default  media => store => {
   const { media: { volume, balance } } = store.getState();
@@ -48,6 +48,22 @@ export default  media => store => {
         type: "UNSET_FOCUS"
       });
     }, 2000)
+  })
+
+  eventListener.on("token_expired", (refresh_token)=>{
+      console.log("refreshed");
+      fetch(`https://accounts.spotify.com/api/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: qs.stringify({
+          grant_type: "refresh_token",
+          refresh_token: refresh_token
+        }) 
+      }).then((res) => {
+        console.log(res);
+      })
   })
 
   eventListener.on("ended", () => {

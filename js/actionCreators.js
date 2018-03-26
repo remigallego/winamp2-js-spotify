@@ -61,10 +61,9 @@ import {
   MEDIA_TAG_REQUEST_INITIALIZED,
   MEDIA_TAG_REQUEST_FAILED,
   PLAYLIST_SIZE_CHANGED,
-
-  S_UPDATE_PLAYER_OBJECT,
-  S_PLAY_URI
+  ADD_TRACK_FROM_URI,
   
+  S_UPDATE_PLAYER_OBJECT  
 } from "./actionTypes";
 import LoadQueue from "./loadQueue";
 
@@ -73,38 +72,37 @@ import {
   parseTracksPlaylist
 } from './spotifyParser'
 
-export function s_playRandomURI() {
-  return (dispatch) => {
-   return dispatch({ type: S_PLAY_URI, URI: "7xGfFoTpQ2E7fRF5lN10tr" })
-  }
-}
-
 export function addTrackFromURI(URI, index) {
   return (dispatch, getState) => {
-   parseTrackURI(URI, (res) => {
-    let state = getState()
+   let state = getState();
+   let token = state.media.player.access_token
+
+   parseTrackURI(token, URI, (res) => {
     if(index === undefined)
       {
         index = state.playlist.trackOrder.length
       }
-    dispatch({ type: ADD_TRACK_FROM_URL, defaultName: `${res.artist} - ${res.name}`, 
+    dispatch({ type: ADD_TRACK_FROM_URI, 
+      defaultName: `${res.artist} - ${res.name}`, 
     artist:  res.artist, title:  res.name,
-    duration: res.duration/1000, URI: URI, id: index, atIndex: index});
+    duration: res.duration/1000, URI: URI, 
+    id: index, atIndex: index});
    })
   }
 }
 
 export function addTracksFromPlaylist(playlist) {
   return (dispatch, getState) => {
-    let state = getState()
+    let state = getState();
+   let token = state.media.player.access_token
     let playlistCount = state.playlist.trackOrder.length
 
-    parseTracksPlaylist(playlist, (err, arr) => {
+    parseTracksPlaylist(token, playlist, (err, arr) => {
       if(err) throw err;
       for(let i = 0 ; i < arr.length ;i++)
       { 
         let index = arr[i].index + playlistCount;
-        dispatch({ type: ADD_TRACK_FROM_URL, defaultName: `${arr[i].artist} - ${arr[i].name}`, 
+        dispatch({ type: ADD_TRACK_FROM_URI, defaultName: `${arr[i].artist} - ${arr[i].name}`, 
         artist:  arr[i].artist, title:  arr[i].name,
         duration: arr[i].duration, URI: arr[i].uri, id: index, atIndex: index});
         //dispatch(addTrackFromURI(arrURI[i].uri, index))
@@ -120,7 +118,7 @@ export function playTrack(id) {
   }
 }
 
-export function s_updatePlayerObject(p) {
+export function createPlayerObject(p) {
       let player = p;
       let id = player._options.id
       let getOAuthToken = player._options.getOAuthToken
@@ -190,7 +188,6 @@ export function stop() {
 
 export function nextN(n) {
   return (dispatch, getState) => {
-    
     const state = getState();
     if (state.media.shuffle) {
       dispatch(playRandomTrack());
@@ -293,6 +290,7 @@ function setEqFromFileReference(fileReference) {
   };
 }
 
+/*
 export function addTracksFromReferences(fileReferences, loadStyle, atIndex) {
   const tracks = Array.from(fileReferences).map(file => ({
     blob: file,
@@ -300,7 +298,8 @@ export function addTracksFromReferences(fileReferences, loadStyle, atIndex) {
   }));
   return loadMediaFiles(tracks, loadStyle, atIndex);
 }
-
+*/
+/*
 const SKIN_FILENAME_MATCHER = new RegExp("(wsz|zip)$", "i");
 const EQF_FILENAME_MATCHER = new RegExp("eqf$", "i");
 export function loadFilesFromReferences(
@@ -324,7 +323,9 @@ export function loadFilesFromReferences(
     dispatch(addTracksFromReferences(fileReferences, loadStyle, atIndex));
   };
 }
+*/
 
+/*
 export function fetchMediaDuration(url, id) {
   return (dispatch, getState) => {
     loadQueue.push(
@@ -345,12 +346,13 @@ export function fetchMediaDuration(url, id) {
     );
   };
 }
-
+*/
 let counter = 0;
 function uniqueId() {
   return counter++;
 }
 
+/*
 export function loadMediaFiles(tracks, loadStyle = null, atIndex = 0) {
   return dispatch => {
     if (loadStyle === LOAD_STYLE.PLAY) {
@@ -444,7 +446,7 @@ export function fetchMediaTags(file, id) {
       });
   };
 }
-
+*/
 export function setSkinFromArrayBuffer(arrayBuffer) {
   return async dispatch => {
     const skinData = await skinParser(arrayBuffer);

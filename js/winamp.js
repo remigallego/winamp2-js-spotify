@@ -6,8 +6,9 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
-import { setSkinFromUrl, loadMediaFiles, addTrackFromURI } from "./actionCreators";
+import { setSkinFromUrl, loadMediaFiles, addTrackFromURI, createPlayerObject } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
+import SpotifyWebPlaybackAPI from './components/SpotifyWebPlaybackAPI'
 
 import {
   SET_AVALIABLE_SKINS,
@@ -30,6 +31,19 @@ const storeHas = (store, predicate) =>
     });
   });
 
+// The Spotify player needs to be loaded from an external script,
+//   thus we need a promise function to keep track of it
+function loadScriptAsync(src) {
+    return new Promise(function(resolve, reject) {
+      let script = document.createElement('script');
+      script.src = src;
+      script.addEventListener('load', ()=> resolve());
+      script.addEventListener('error', (e) => reject(e));
+      document.body.appendChild(script);
+    })
+}
+
+
 class Winamp {
   static browserIsSupported() {
     const supportsAudioApi = !!(
@@ -39,15 +53,48 @@ class Winamp {
     const supportsPromises = typeof Promise !== "undefined";
     return supportsAudioApi && supportsCanvas && supportsPromises;
   }
-
+  
   constructor(options) {
     this.options = options;
     const {
       initialTracks,
+      tokens,
       avaliableSkins,
       enableHotkeys = false
     } = this.options;
-
+    
+  loadScriptAsync('https://sdk.scdn.co/spotify-player.js').then(() => {
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      const player = new Spotify.Player({
+          name: 'Winampify',
+          getOAuthToken: cb => { cb(this.options.tokens.access_token); }
+      })
+      
+      player.access_token =   this.options.tokens.access_token,
+      player.refresh_token =  this.options.tokens.refresh_token,   
+      // Error handling
+      player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      player.addListener('account_error', ({ message }) => { console.error(message); });
+      player.addListener('playback_error', ({ message }) => { console.error(message); });
+    
+      // Playback status updates
+      player.addListener('player_state_changed', state => { console.log(state); });
+    
+      // Ready
+      player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+        this.store.dispatch(createPlayerObject(player));
+        // Initial Track:
+        this.store.dispatch(addTrackFromURI("1ngKxzxHTfZ2l5IU3lq2V8", 0));    
+      });
+    
+      // Connect to the player!
+      player.connect();
+      };      
+    }).catch((e) => {
+      console.error(e) 
+    });
+    
     this.media = new Media();
     this.store = getStore(this.media, this.options.__initialState);
     this.store.dispatch({
@@ -63,13 +110,6 @@ class Winamp {
 
     this.store.dispatch(setSkinFromUrl(this.options.initialSkin.url));
 
-
-    // Initial Track:
-    this.store.dispatch(addTrackFromURI("1ngKxzxHTfZ2l5IU3lq2V8", 0));    
-
-   // if (initialTracks) {
-      //this.store.dispatch(loadMediaFiles(initialTracks, LOAD_STYLE.BUFFER));
-   // }
     if (avaliableSkins) {
       this.store.dispatch({
         type: SET_AVALIABLE_SKINS,

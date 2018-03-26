@@ -1,9 +1,10 @@
-import access_token from './access_token'
+
+
 export const getURIDisplayName = (state, URI) => {
 
 }
 
-export const parseTrackURI = (URI, callback) => {
+export const parseTrackURI = (access_token, URI, callback) => {
           fetch(`https://api.spotify.com/v1/tracks/${URI}`, {
             method: 'GET',
             headers: {
@@ -22,7 +23,7 @@ export const parseTrackURI = (URI, callback) => {
 /* @params 
    <playlist> should be in this form: spotify:user:xxxx:playlist:xxxx
 */
-export const parseTracksPlaylist = (playlist, callback) => { 
+export const parseTracksPlaylist = (access_token, playlist, callback) => { 
     let offset = 0;
     let user;
     let URI;
@@ -41,10 +42,10 @@ export const parseTracksPlaylist = (playlist, callback) => {
     }
 
     let tracks = []
-    fetchplaylist(tracks, user, URI, offset, (err, res) => callback(err, res))
+    fetchplaylist(access_token, tracks, user, URI, offset, (err, res) => callback(err, res))
 }
 
-export const fetchplaylist = (tracks, user, URI, offset, callback)  => {
+export const fetchplaylist = (access_token, tracks, user, URI, offset, callback)  => {
     fetch(`https://api.spotify.com/v1/users/${user}/playlists/${URI}/tracks?offset=${offset}`, {
         method: 'GET',
         headers: {
@@ -67,7 +68,7 @@ export const fetchplaylist = (tracks, user, URI, offset, callback)  => {
                             })
                     }
                     if(tracks.length === offset + 100)
-                        fetchplaylist(tracks, user, URI, offset+100, (err, res) => callback(err, res))
+                        fetchplaylist(access_token, tracks, user, URI, offset+100, (err, res) => callback(err, res))
                     else
                         callback(null, tracks)
             }

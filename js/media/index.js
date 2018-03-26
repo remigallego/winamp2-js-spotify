@@ -1,5 +1,4 @@
 import eventListener from '../spotifyEvents'
-import access_token from '../access_token.js'
 
 export default class Media {
   constructor() {
@@ -8,6 +7,7 @@ export default class Media {
     this.id = null;
     this.name = null
     this.status = "PAUSED"
+    this.access_token = null
   }
 
   setPlayer(player) {
@@ -15,7 +15,7 @@ export default class Media {
     this.getOAuthToken = player._options.getOAuthToken
     this.id = player._options.id
     this.name = player._options.name
-
+    this.access_token = player._options.access_token
     this.player.addListener('player_state_changed', (state) => {
 
       // Seems to be the condition for a track to be considered as ended
@@ -24,6 +24,10 @@ export default class Media {
 
       eventListener.emit("player_state_changed", state)
     });
+    player.addListener('authentication_error', ({ message }) => { 
+      eventListener.emit("token_expired", this.player.refresh_token)
+     });
+    
   }
 
   getDuration(callback) {
