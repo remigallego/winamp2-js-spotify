@@ -6,7 +6,7 @@ import getStore from "./store";
 import App from "./components/App";
 import Hotkeys from "./hotkeys";
 import Media from "./media";
-import { setSkinFromUrl, loadMediaFiles, addTrackFromURI, createPlayerObject } from "./actionCreators";
+import { setSkinFromUrl, loadMediaFiles, addTrackFromURI, createPlayerObject, addTracksFromPlaylist } from "./actionCreators";
 import { LOAD_STYLE } from "./constants";
 import SpotifyWebPlaybackAPI from './components/SpotifyWebPlaybackAPI'
 
@@ -84,8 +84,13 @@ class Winamp {
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id);
         this.store.dispatch(createPlayerObject(player));
+        /*
         // Initial Track:
-        this.store.dispatch(addTrackFromURI("1ngKxzxHTfZ2l5IU3lq2V8", 0));    
+        this.store.dispatch(addTrackFromURI("1ngKxzxHTfZ2l5IU3lq2V8", 0));     
+        */
+
+        // Initial Album:
+        this.store.dispatch(addTracksFromPlaylist("spotify:album:3HNzOyPbz5vPvUie7lI97X"));
       });
     
       // Connect to the player!

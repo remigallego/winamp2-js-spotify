@@ -41,7 +41,7 @@ handleSubmit(e) {
 render() {
   return(
     <div>
-      {/*       DEBUG       */}
+      {/*       DEBUG       
       <button onClick={() => this.props.removeAllTracks()}>Remove All Tracks</button>
       <button onClick={() => this.props.addTrackFromURI("4rzfv0JLZfVhOhbSQ8o5jZ")}>Add Track Odiseo - Api</button>
       <button onClick={() => this.props.addTrackFromURI("1ngKxzxHTfZ2l5IU3lq2V8")}>Add Track Meteor - Arctec Gemini</button>
@@ -49,6 +49,7 @@ render() {
       <form onSubmit={(e) => this.handleSubmit(e)}>
       <input value={this.state.input} onChange={(e) => this.handleChange(e)} style={{width: "700px"}}>
       </input></form>
+      */}
    </div>
   )
 }

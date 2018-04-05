@@ -8,6 +8,7 @@ import EqualizerWindow from "./EqualizerWindow";
 import AvsWindow from "./AvsWindow";
 import Skin from "./Skin";
 import SpotifyWebPlaybackAPI from './SpotifyWebPlaybackAPI'
+import SpotifyUI from './SpotifyUI'
 
 import "../../css/winamp.css";
 
@@ -46,6 +47,7 @@ const App = ({
       <Skin />
       <WindowManager windows={windows} container={container} />
       <SpotifyWebPlaybackAPI />
+      <SpotifyUI />
     </div>
   );
 };

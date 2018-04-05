@@ -1,0 +1,49 @@
+.explorer-window {
+    position: absolute;
+    border: 2px solid #026bfe;
+    border-radius: 5px;
+    height: auto;
+}
+
+.explorer-title {
+    background-color: #0055e5;
+    background: linear-gradient(#026bfe, #1a6cd0);
+    width: 500px;
+    height: auto;
+    padding-bottom: 2px;
+}
+
+.explorer-title p {
+    font-family: Trebuchet MS Bold;
+    font-size: 16px;
+    color: white;
+    font-weight: 500;
+    margin: 0px;
+    padding-left: 20px;
+}
+/* #EFEBD6 */
+
+.explorer-toolbar {
+    background-color: #EFEBD6;
+    height: 40px;
+}
+
+.explorer-toolbar-imgcontainer {
+
+}
+
+.explorer-content {
+    height: 400px;
+    background-color: white;
+    color: black;
+}
+.explorer-content p {
+    margin: 0;
+}
+.selected {
+    margin: 0;
+    color: red;
+}
+.explorer-foot {
+
+}

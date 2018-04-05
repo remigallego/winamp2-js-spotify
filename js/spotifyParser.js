@@ -27,6 +27,7 @@ export const parseTracksPlaylist = (access_token, playlist, callback) => {
     let offset = 0;
     let user;
     let URI;
+    let tracks = []
     let p = playlist.split(":")
     if(p.length === 5) {
          user = p[2]
@@ -36,13 +37,14 @@ export const parseTracksPlaylist = (access_token, playlist, callback) => {
          user = p[1]
          URI = p[3]
     }
-    if(p.length < 4)
-    {
-        callback("WRONG_FORMAT")
+    if(p.length === 3)
+    {   
+        tracks = [];
+        URI = p[2];
+        fetchAlbum(access_token, tracks, URI, (err, res) => callback(err, res));
     }
-
-    let tracks = []
-    fetchplaylist(access_token, tracks, user, URI, offset, (err, res) => callback(err, res))
+    else 
+        fetchplaylist(access_token, tracks, user, URI, offset, (err, res) => callback(err, res))
 }
 
 export const fetchplaylist = (access_token, tracks, user, URI, offset, callback)  => {
@@ -76,5 +78,34 @@ export const fetchplaylist = (access_token, tracks, user, URI, offset, callback)
             callback(tracks)
        }).catch((err)=>{
            console.log(err)
+        })
+}
+
+export const fetchAlbum = (access_token, tracks, URI, callback)  => {
+    fetch(`https://api.spotify.com/v1/albums/${URI}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${access_token}`
+        }
+      }).then(response => response.json())
+      .then(json => {
+          let albumTracks = json.tracks.items;
+          if((albumTracks[0].id) !== null)
+           {     
+               for(let i = 0; i < albumTracks.length ; i++)
+                    {       
+                            if(albumTracks[i].artists !== undefined)
+                            tracks.push({
+                                artist: albumTracks[i].artists[0].name,
+                                duration: albumTracks[i].duration_ms/1000,
+                                name: albumTracks[i].name,
+                                uri: albumTracks[i].id, 
+                                index: i
+                            })
+                    }
+                        callback(null, tracks)
+            }
+       }).catch((err)=>{
+           callback(err)
         })
 }

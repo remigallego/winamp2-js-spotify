@@ -1,3 +1,27 @@
+
+### Brainstorming
+List of tracks can either be:
+* Playlist
+* Album
+* Radio
+
+And I chose to represent them with: 
+explorer window with Windows XP assets
+
+Folders: 
+* Playlist
+* Album
+Winamp File (".mp3"?):
+* Track
+
+The explorer path can be used as the search bar
+Artist ->   - Album 1: * Track 1
+                       * Track 2
+                       * Track 3
+            - Album 2
+            - etc..
+
+
 # winampify-js
 
 A fork of <a href="https://github.com/captbaritone/winamp2-js">winamp2-js</a> which implements Spotify WebPlayback API.
