@@ -1,0 +1,120 @@
+$widthexplorer: 700px
+$heightexplorer: 700px
+    
+    
+.explorer-window 
+    position: absolute
+    border: 2px solid #026bfe
+    border-radius: 5px
+    z-index: -5
+
+.explorer-title
+    background-color: #0055e5
+    no-repea
+    background: linear-gradient(#026bfe, #1a6cd0)
+    width: $widthexplorer
+    height: auto
+    cursor: move
+    p 
+        display: inline-block        
+        font-family: Trebuchet MS Bold
+        font-size: 16px
+        color: white
+        font-weight: 500
+        margin: 0px
+        position: relative
+        bottom: 3px
+        left: 5px
+        user-select: none
+        cursor: default
+    img
+        pointer-events: none
+        width: 20px
+        height: 20px
+        display: inline-block
+        user-select: none
+        cursor: default
+.explorer-toolbar-imgcontainer
+    img
+
+.explorer-mainview
+    display: flex
+    .explorer-tree
+        flex: 0.3
+        background-color: white
+        border-right: 2px solid black
+        padding-left: 3px
+        .explorer-tree-text
+            cursor: pointer       
+        .explorer-tree-text:hover
+            text-decoration: underline
+        .explorer-tree-icon
+            margin-right: 5px
+            width: 14px
+            height: 14px
+        
+    .explorer-items-container 
+        height: $heightexplorer
+        background-color: white
+        overflow: scroll
+        flex: 1
+        display: inline-bock
+
+.explorer-item
+    font-family: "Tahoma"
+    cursor: default
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+    box-sizing: border-box
+    height: 23px    
+    white-space: nowrap
+
+.explorer-selected
+    background-color: #3064BD
+    color: white
+    border: 1px solid white
+    border-style: dotted
+    box-sizing: border-box
+        
+
+.explorer-item-icon--wrapper
+    position: relative
+    display: inline-block
+    margin-right: 5px
+    margin-left: 2px
+    left: 0
+    top: 0
+    width: 14px
+    height: 14px
+.explorer-item-icon--bigger
+    position: relative
+    top: 3px
+    width: 14px
+    height: 14px
+    
+.explorer-item-icon--smaller
+    position: absolute
+    width: 8px
+    height: 8px
+    left: 6px
+    top: 9px
+    
+
+        
+
+
+
+
+
+// TODO
+
+
+
+
+.explorer-toolbar 
+    background-color: #EFEBD6
+    height: 40px

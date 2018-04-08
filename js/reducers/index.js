@@ -50,6 +50,7 @@ import {
 
 import playlist from "./playlist";
 import windows from "./windows";
+import explorer from "./explorer";
 
 const defaultUserInput = {
   focus: null,
@@ -277,7 +278,8 @@ const reducer = combineReducers({
   equalizer,
   playlist,
   media,
-  network
+  network,
+  explorer
 });
 
 export default reducer;

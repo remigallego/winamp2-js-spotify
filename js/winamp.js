@@ -90,7 +90,7 @@ class Winamp {
         */
 
         // Initial Album:
-        this.store.dispatch(addTracksFromPlaylist("spotify:album:3HNzOyPbz5vPvUie7lI97X"));
+        //this.store.dispatch(addTracksFromPlaylist("spotify:album:3HNzOyPbz5vPvUie7lI97X"));
       });
     
       // Connect to the player!

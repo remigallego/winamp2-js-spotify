@@ -1,13 +1,16 @@
 /* Rules for the page layout */
 html {
-    background-color: #F77C88;
     height: 100%;
     width: 100%;    
-    background: linear-gradient(#F77C88, #FBA377);
+    background-image: url(../js/components/SpotifyUI/images/windowsxp-wallpaper.jpg) ;
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;              
 }
 body {
     font-family: arial; 
     font-size: 15px;
+
 }
 
 .landing-wrapper {
@@ -19,6 +22,7 @@ body {
     left: 0;
     bottom: 0;
     right: 0;
+    
 }
 .landing-text {
     color: #1E3264;

@@ -162,17 +162,7 @@ const playlist = (state = defaultPlaylistState, action) => {
         // TODO: This could probably be made to work, but we clear it just to be safe.
         lastSelectedIndex: null
       };
-    case SET_MEDIA:
-      return {
-        ...state,
-        tracks: {
-          ...state.tracks,
-          [action.id]: {
-            ...state.tracks[action.id],
-            duration: action.length
-          }
-        }
-      };
+
     case SET_MEDIA_TAGS:
       return {
         ...state,

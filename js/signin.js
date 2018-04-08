@@ -1,16 +1,19 @@
-import React from 'react'
+import React from "react";
 import { render } from "react-dom";
 
-const server = "http://remigallego.com:8888"
+const server = "http://remigallego.com:8888";
 
 const Signin = () => {
-        return(
-            <div className="signin-btn-wrapper">
-                <div className="signin-btn" onClick={() => window.location = server+ "/login"} >
-                    SIGN IN TO SPOTIFY
-                </div>
-            </div>
-        )
-}
+  return (
+    <div className="signin-btn-wrapper">
+      <div
+        className="signin-btn"
+        onClick={() => (window.location = `${server}/login`)}
+      >
+        SIGN IN TO SPOTIFY
+      </div>
+    </div>
+  );
+};
 
-export default Signin
+export default Signin;
